@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Food } from '../../../shared/models/food';
 import { FoodService } from '../../../services/food.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private foodService: FoodService,
     private activateRoute: ActivatedRoute,
+    private router: Router,
     ) {}
 
   ngOnInit() {
@@ -25,5 +26,17 @@ export class HomeComponent implements OnInit {
       this.foods = this.foodService.getAllFood();
     }
    })
+
+   this.activateRoute.params.subscribe(params => {
+    if(params['tag']) {
+      this.foods = this.foodService.getFoodByTag(params['tag'])
+    } else {
+      this.foods = this.foodService.getAllFood();
+    }
+   })
+  }
+
+  findByTag(tag: string) {
+    this.router.navigateByUrl('/tag/' + tag)
   }
 }
