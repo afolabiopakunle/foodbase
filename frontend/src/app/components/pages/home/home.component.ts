@@ -16,24 +16,19 @@ export class HomeComponent implements OnInit {
     private foodService: FoodService,
     private activateRoute: ActivatedRoute,
     private router: Router,
-    ) {}
+  ) { }
 
   ngOnInit() {
-   this.activateRoute.params.subscribe(params => {
-    if(params['searchTerm']) {
-      this.foods = this.foodService.getFoodBySearchTerm(params['searchTerm'])
-    } else {
-      this.foods = this.foodService.getAllFood();
-    }
-   })
+    this.activateRoute.params.subscribe(params => {
+      if (params['searchTerm']) {
+        this.foods = this.foodService.getFoodBySearchTerm(params['searchTerm'])
+      } else if (params['tag']) {
+        this.foods = this.foodService.getFoodByTag(params['tag'])
+      } else {
+        this.foods = this.foodService.getAllFood();
+      }
+    })
 
-   this.activateRoute.params.subscribe(params => {
-    if(params['tag']) {
-      this.foods = this.foodService.getFoodByTag(params['tag'])
-    } else {
-      this.foods = this.foodService.getAllFood();
-    }
-   })
   }
 
   findByTag(tag: string) {
